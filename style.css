@@ -1,0 +1,58 @@
+* {
+    font-family: Calibri, serif;
+    margin: 0;
+}
+body {
+    background: #069;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+header, nav, article {
+    background: white;
+    border: 5px solid #069;
+    padding: 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+}
+nav>div {
+    margin: 10px;
+}
+nav a:link {
+    color: #069;
+    font-weight: bold;
+}
+
+h1, h2 {
+    font-variant: small-caps;
+}
+section {
+    border-top: 1px solid #069;
+    /*padding-left: 10px;*/
+    /*padding-right: 10px;*/
+    /*padding-top: 20px;*/
+    /*padding-bottom: 20px;*/
+    padding: 20px;
+
+}
+ul {
+    padding-left: 30px;
+    list-style-position: outside;
+}
+li {
+    padding-top: 5px;
+}
+ul>ul>li {
+    list-style-type: '▪  ';
+}
+
+@media screen and (min-width:800px) {
+    header, nav, article {
+        width: 800px;
+    }
+}
