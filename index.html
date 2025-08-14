@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Baby Reveal 💖💙</title>
+<title>Revelação do Bebé 💖</title>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 <style>
   body {
     margin: 0;
     padding: 0;
     font-family: 'Pacifico', cursive;
-    background: linear-gradient(to bottom, #fff0f5, #e0f7fa);
+    background: linear-gradient(to bottom, #fff0f5, #ffe6f0);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,53 +21,99 @@
   h1 {
     font-size: 3rem;
     margin-bottom: 20px;
+    color: #d63384;
   }
-  button {
-    padding: 15px 30px;
-    font-size: 1.5rem;
-    border: none;
-    background-color: #ff80ab;
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  button:hover {
-    background-color: #ff4081;
+  #countdown {
+    font-size: 2rem;
+    color: #ff4da6;
+    margin-bottom: 20px;
   }
   .reveal {
     display: none;
     font-size: 4rem;
     margin-top: 20px;
+    color: #ff3399;
+    animation: fadein 1s ease-in-out forwards;
+  }
+  @keyframes fadein {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  audio {
+    display: none;
   }
 </style>
 </head>
 <body>
 
-<h1>Guess what we're having… 🎀💙</h1>
-<button onclick="revealGender()">Click to Reveal!</button>
-<div class="reveal" id="revealText">💖 It's a Girl! 💖</div>
+<h1>Adivinhem o que vem aí… 🎀💖</h1>
+<div id="countdown"></div>
+<div class="reveal" id="revealText">💖💖 É UMA MENINA!!! 💖💖</div>
 
+<!-- Música feliz (efeito de apito / assobio) -->
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f2ef7b1e88.mp3?filename=happy-whistle-11004.mp3" type="audio/mpeg">
+  O seu navegador não suporta áudio.
+</audio>
+
+<!-- Biblioteca confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
-function revealGender() {
-  document.getElementById('revealText').style.display = 'block';
-  // Confetti burst
-  var duration = 2 * 1000;
-  var end = Date.now() + duration;
+/* ==== Configuração da revelação ==== */
+// Data/hora alvo: amanhã às 20:30 Lisboa
+let revealDate = new Date();
+// Se já passou de 20:30 hoje, põe amanhã
+revealDate.setDate(revealDate.getDate() + 1);
+revealDate.setHours(20, 30, 0, 0);
+
+/* ==== Contagem decrescente ==== */
+let countdownEl = document.getElementById("countdown");
+let revealText = document.getElementById("revealText");
+let bgMusic = document.getElementById("bgMusic");
+
+let timer = setInterval(function() {
+  let now = new Date().getTime();
+  let distance = revealDate.getTime() - now;
+
+  if (distance <= 0) {
+    clearInterval(timer);
+    iniciarRevelacao();
+  } else {
+    let hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+    let minutes = Math.floor((distance / (1000 * 60)) % 60);
+    let seconds = Math.floor((distance / 1000) % 60);
+    countdownEl.innerHTML = 
+      `Faltam ${hours}h ${minutes}m ${seconds}s`;
+  }
+}, 1000);
+
+/* ==== Função de revelação ==== */
+function iniciarRevelacao() {
+  countdownEl.style.display = "none";
+  revealText.style.display = "block";
+  bgMusic.play();
+  soltarConfetis();
+}
+
+/* ==== Confettis em tons rosa durante mais tempo ==== */
+function soltarConfetis() {
+  let duration = 5000; // 5 segundos
+  let end = Date.now() + duration;
 
   (function frame() {
     confetti({
-      particleCount: 5,
+      particleCount: 6,
       angle: 60,
-      spread: 55,
-      origin: { x: 0 }
+      spread: 65,
+      origin: { x: 0 },
+      colors: ['#ff69b4', '#ffb6c1', '#ffc0cb']
     });
     confetti({
-      particleCount: 5,
+      particleCount: 6,
       angle: 120,
-      spread: 55,
-      origin: { x: 1 }
+      spread: 65,
+      origin: { x: 1 },
+      colors: ['#ff69b4', '#ffb6c1', '#ffc0cb']
     });
     if (Date.now() < end) {
       requestAnimationFrame(frame);
