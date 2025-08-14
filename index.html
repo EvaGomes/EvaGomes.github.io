@@ -120,6 +120,14 @@ function soltarConfetis() {
     }
   }());
 }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'r' || e.key === 'R') {
+    clearInterval(timer); // cancela o countdown se estiver a correr
+    iniciarRevelacao();
+  }
+});
+
 </script>
 
 </body>
