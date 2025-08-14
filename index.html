@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baby Reveal 💖💙</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Pacifico', cursive;
+    background: linear-gradient(to bottom, #fff0f5, #e0f7fa);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    text-align: center;
+  }
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  button {
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    border: none;
+    background-color: #ff80ab;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  button:hover {
+    background-color: #ff4081;
+  }
+  .reveal {
+    display: none;
+    font-size: 4rem;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Guess what we're having… 🎀💙</h1>
+<button onclick="revealGender()">Click to Reveal!</button>
+<div class="reveal" id="revealText">💖 It's a Girl! 💖</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+function revealGender() {
+  document.getElementById('revealText').style.display = 'block';
+  // Confetti burst
+  var duration = 2 * 1000;
+  var end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 5,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 }
+    });
+    confetti({
+      particleCount: 5,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 }
+    });
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  }());
+}
+</script>
+
+</body>
+</html>
