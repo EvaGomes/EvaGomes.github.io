@@ -3,20 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Revelação do Bebé 💖</title>
+<title>Revelação do Bebé 💖💙</title>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 <style>
   body {
     margin: 0;
     padding: 0;
     font-family: 'Pacifico', cursive;
-    background: linear-gradient(to bottom, #fff0f5, #ffe6f0);
+    background: linear-gradient(to bottom, #fff0f5, #e0f7fa); /* Rosa + azul */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     flex-direction: column;
     text-align: center;
+    transition: background 1s ease;
   }
   h1 {
     font-size: 3rem;
@@ -46,31 +47,29 @@
 </head>
 <body>
 
-<h1>Adivinhem o que vem aí… 🎀💖</h1>
+<h1>Adivinhem o que vem aí… 🎀💖💙</h1>
 <div id="countdown"></div>
 <div class="reveal" id="revealText">💖💖 É UMA MENINA!!! 💖💖</div>
 
-<!-- Música feliz (efeito de apito / assobio) -->
+<!-- Música feliz (loop) -->
 <audio id="bgMusic" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f2ef7b1e88.mp3?filename=happy-whistle-11004.mp3" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/download/audio/2024/08/19/audio_3f958dc319.mp3?filename=happy-whistle-tunes-233525.mp3" type="audio/mpeg">
   O seu navegador não suporta áudio.
 </audio>
 
 <!-- Biblioteca confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
-/* ==== Configuração da revelação ==== */
-// Data/hora alvo: amanhã às 20:30 Lisboa
-let revealDate = new Date();
-// Se já passou de 20:30 hoje, põe amanhã
-revealDate.setDate(revealDate.getDate() + 1);
-revealDate.setHours(20, 30, 0, 0);
+/* ==== Configuração da DATA/HORA da revelação ==== */
+// 15 de agosto às 20:30 (hora de Lisboa)
+let revealDate = new Date('2025-08-15T20:30:00+01:00');
 
-/* ==== Contagem decrescente ==== */
 let countdownEl = document.getElementById("countdown");
 let revealText = document.getElementById("revealText");
 let bgMusic = document.getElementById("bgMusic");
+let bodyEl = document.body;
 
+/* ==== Contagem decrescente ==== */
 let timer = setInterval(function() {
   let now = new Date().getTime();
   let distance = revealDate.getTime() - now;
@@ -82,8 +81,7 @@ let timer = setInterval(function() {
     let hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
     let minutes = Math.floor((distance / (1000 * 60)) % 60);
     let seconds = Math.floor((distance / 1000) % 60);
-    countdownEl.innerHTML = 
-      `Faltam ${hours}h ${minutes}m ${seconds}s`;
+    countdownEl.innerHTML = `Faltam ${hours}h ${minutes}m ${seconds}s`;
   }
 }, 1000);
 
@@ -92,43 +90,10 @@ function iniciarRevelacao() {
   countdownEl.style.display = "none";
   revealText.style.display = "block";
   bgMusic.play();
+  bodyEl.style.background = "linear-gradient(to bottom, #fff0f5, #ffe6f0)"; // Fica só rosa
   soltarConfetis();
 }
 
-/* ==== Confettis em tons rosa durante mais tempo ==== */
+/* ==== Confettis em tons rosa ==== */
 function soltarConfetis() {
-  let duration = 5000; // 5 segundos
-  let end = Date.now() + duration;
-
-  (function frame() {
-    confetti({
-      particleCount: 6,
-      angle: 60,
-      spread: 65,
-      origin: { x: 0 },
-      colors: ['#ff69b4', '#ffb6c1', '#ffc0cb']
-    });
-    confetti({
-      particleCount: 6,
-      angle: 120,
-      spread: 65,
-      origin: { x: 1 },
-      colors: ['#ff69b4', '#ffb6c1', '#ffc0cb']
-    });
-    if (Date.now() < end) {
-      requestAnimationFrame(frame);
-    }
-  }());
-}
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'r' || e.key === 'R') {
-    clearInterval(timer); // cancela o countdown se estiver a correr
-    iniciarRevelacao();
-  }
-});
-
-</script>
-
-</body>
-</html>
+  let duration
