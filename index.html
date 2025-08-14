@@ -96,4 +96,38 @@ function iniciarRevelacao() {
 
 /* ==== Confettis em tons rosa ==== */
 function soltarConfetis() {
-  let duration
+  let duration = 5000; // 5s
+  let end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 6,
+      angle: 60,
+      spread: 65,
+      origin: { x: 0 },
+      colors: ['#ff69b4', '#ffb6c1', '#ffc0cb']
+    });
+    confetti({
+      particleCount: 6,
+      angle: 120,
+      spread: 65,
+      origin: { x: 1 },
+      colors: ['#ff69b4', '#ffb6c1', '#ffc0cb']
+    });
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  }());
+}
+
+/* ==== Atalho de teclado para revelar (R) ==== */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'r' || e.key === 'R') {
+    clearInterval(timer);
+    iniciarRevelacao();
+  }
+});
+</script>
+
+</body>
+</html>
