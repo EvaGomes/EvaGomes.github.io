@@ -10,7 +10,9 @@
     margin: 0;
     padding: 0;
     font-family: 'Pacifico', cursive;
-    background: linear-gradient(to bottom, #fff0f5, #e0f7fa); /* Rosa + azul */
+    background: linear-gradient(270deg, #fff0f5, #e0f7fa); /* rosa + azul */
+    background-size: 400% 400%;
+    animation: gradiente 8s ease infinite; /* animação suave do fundo */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,16 +21,37 @@
     text-align: center;
     transition: background 1s ease;
   }
+
+  @keyframes gradiente {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+  }
+
   h1 {
     font-size: 3rem;
     margin-bottom: 20px;
     color: #d63384;
   }
+
   #countdown {
     font-size: 2rem;
     color: #ff4da6;
     margin-bottom: 20px;
   }
+
+  .zoom-number {
+    font-size: 5rem;
+    color: #ff4da6;
+    animation: zoomIn 0.5s ease forwards;
+  }
+
+  @keyframes zoomIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.5); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
   .reveal {
     display: none;
     font-size: 4rem;
@@ -36,10 +59,12 @@
     color: #ff3399;
     animation: fadein 1s ease-in-out forwards;
   }
+
   @keyframes fadein {
     from {opacity: 0;}
     to {opacity: 1;}
   }
+
   audio {
     display: none;
   }
@@ -51,22 +76,27 @@
 <div id="countdown"></div>
 <div class="reveal" id="revealText">💖💖 É UMA MENINA!!! 💖💖</div>
 
-<!-- Música feliz (loop) -->
+<!-- Música principal -->
 <audio id="bgMusic" loop>
   <source src="https://cdn.pixabay.com/download/audio/2024/08/19/audio_3f958dc319.mp3?filename=happy-whistle-tunes-233525.mp3" type="audio/mpeg">
-  O seu navegador não suporta áudio.
 </audio>
 
-<!-- Biblioteca confetti -->
+<!-- Som para últimos 10 segundos -->
+<audio id="countdownBeep">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f2578f97c1.mp3?filename=beep-countdown-11003.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 <script>
-/* ==== Configuração da DATA/HORA da revelação ==== */
-// 15 de agosto às 20:30 (hora de Lisboa)
+/* ==== Data/hora fixa da revelação ==== */
 let revealDate = new Date('2025-08-15T20:30:00+01:00');
 
 let countdownEl = document.getElementById("countdown");
 let revealText = document.getElementById("revealText");
 let bgMusic = document.getElementById("bgMusic");
+let beepSound = document.getElementById("countdownBeep");
 let bodyEl = document.body;
 
 /* ==== Contagem decrescente ==== */
@@ -78,10 +108,21 @@ let timer = setInterval(function() {
     clearInterval(timer);
     iniciarRevelacao();
   } else {
-    let hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-    let minutes = Math.floor((distance / (1000 * 60)) % 60);
-    let seconds = Math.floor((distance / 1000) % 60);
-    countdownEl.innerHTML = `Faltam ${hours}h ${minutes}m ${seconds}s`;
+    let secondsLeftTotal = Math.floor((distance / 1000));
+    let hours = Math.floor((secondsLeftTotal / 3600) % 24);
+    let minutes = Math.floor((secondsLeftTotal / 60) % 60);
+    let seconds = secondsLeftTotal % 60;
+
+    // Últimos 10 segundos: zoom e beep
+    if (secondsLeftTotal <= 10) {
+      countdownEl.className = "zoom-number";
+      countdownEl.innerHTML = secondsLeftTotal;
+      beepSound.currentTime = 0;
+      beepSound.play();
+    } else {
+      countdownEl.className = "";
+      countdownEl.innerHTML = `Faltam ${hours}h ${minutes}m ${seconds}s`;
+    }
   }
 }, 1000);
 
@@ -90,15 +131,16 @@ function iniciarRevelacao() {
   countdownEl.style.display = "none";
   revealText.style.display = "block";
   bgMusic.play();
-  bodyEl.style.background = "linear-gradient(to bottom, #fff0f5, #ffe6f0)"; // Fica só rosa
+  // parar animação do fundo e fixar rosa
+  bodyEl.style.animation = "none";
+  bodyEl.style.background = "linear-gradient(to bottom, #fff0f5, #ffe6f0)";
   soltarConfetis();
 }
 
-/* ==== Confettis em tons rosa ==== */
+/* ==== Confettis ==== */
 function soltarConfetis() {
-  let duration = 5000; // 5s
+  let duration = 5000;
   let end = Date.now() + duration;
-
   (function frame() {
     confetti({
       particleCount: 6,
@@ -120,7 +162,7 @@ function soltarConfetis() {
   }());
 }
 
-/* ==== Atalho de teclado para revelar (R) ==== */
+/* ==== Atalho teclado R ==== */
 document.addEventListener('keydown', function(e) {
   if (e.key === 'r' || e.key === 'R') {
     clearInterval(timer);
