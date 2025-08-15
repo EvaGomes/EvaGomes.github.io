@@ -1,6 +1,6 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>❤ Gender-Reveal ❤</title>
@@ -39,7 +39,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 2rem;
+        gap: 3em;
         height: 100vh;
       }
       body.revealed {
@@ -48,11 +48,24 @@
       }
 
       #intro {
+        background: rgba(255,255,255,0.5);
         font-family: "Patrick Hand SC", cursive;
         font-size: 3rem;
+        padding: 1rem;
+        text-align: center;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1em;
       }
       #intro.hidden {
         display: none;
+      }
+      #intro img {
+        max-height: 40vh;
+        max-width: 80vw;
       }
 
       #countdown {
@@ -90,7 +103,7 @@
   <body>
     <div id="intro">
       <p>Que bichinho é este?</p>
-      <img src="./eco.png" />
+      <img src="https://github.com/EvaGomes/EvaGomes.github.io/blob/site/eco.jpg?raw=true" />
       <p>❤❤❤ Munino?<br />Munina? ❤❤❤</p>
     </div>
     <div id="countdown"></div>
