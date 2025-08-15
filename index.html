@@ -109,7 +109,6 @@
     <div id="countdown"></div>
     <div id="revealText"></div>
 
-    <!-- Música principal -->
     <audio id="bgMusic" loop style="display: none">
       <source
         src="https://cdn.pixabay.com/download/audio/2024/08/19/audio_3f958dc319.mp3?filename=happy-whistle-tunes-233525.mp3"
@@ -117,7 +116,6 @@
       />
     </audio>
 
-    <!-- Som para últimos 10 segundos -->
     <audio id="countdownBeep" style="display: none">
       <source
         src="https://cdn.pixabay.com/download/audio/2025/07/10/audio_20c3b0b569.mp3?filename=countdown-372679.mp3"
@@ -125,14 +123,12 @@
       />
     </audio>
 
-    <!-- Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
-      /* ==== Data/hora fixa da revelação ==== */
-      const REVEAL_DATE = new Date(Date.now() + 35 * 1000); //new Date('2025-08-15T20:30:00+01:00');
+      const REVEAL_DATE = new Date(Date.now() + 45 * 1000); //new Date('2025-08-15T20:30:00+01:00');
       const FINAL_COUNTDOWN_DURATION_SECS = 31; // 60
-      const CONFETTIS_DURATION_SECS = 10;
+      const CONFETTIS_DURATION_SECS = 8;
 
       const introEl = document.getElementById("intro");
       const countdownEl = document.getElementById("countdown");
@@ -187,7 +183,7 @@
         introEl.className = "hidden";
         countdownEl.className = "revealed";
         revealText.className = "revealed";
-        revealText.innerHTML = "uma XavierA!!!<br />&#127872;";
+        revealText.innerHTML = String.fromCharCode(117, 109, 97, 32, 88, 97, 118, 105, 101, 114, 65) + "!!!<br />&#127872;";
 
         countdownSound.pause();
         revealMusic.play();
@@ -209,13 +205,6 @@
           }
         })();
       }
-
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "0") {
-          clearInterval(timer1);
-          startReveal();
-        }
-      });
     </script>
   </body>
 </html>
