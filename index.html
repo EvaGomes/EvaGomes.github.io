@@ -1,175 +1,208 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Revelação do Bebé 💖💙</title>
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Pacifico', cursive;
-    background: linear-gradient(270deg, #fff0f5, #e0f7fa); /* rosa + azul */
-    background-size: 400% 400%;
-    animation: gradiente 8s ease infinite; /* animação suave do fundo */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-    text-align: center;
-    transition: background 1s ease;
-  }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>❤ Gender-Reveal ❤</title>
 
-  @keyframes gradiente {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
-  }
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oooh+Baby&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&display=swap"
+      rel="stylesheet"
+    />
 
-  h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color: #d63384;
-  }
+    <style>
+      :root {
+        --colors-blue: #b0f6ff;
+        --colors-purple: #911a8c;
+        --colors-pink: #ffb6cf;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+      }
 
-  #countdown {
-    font-size: 2rem;
-    color: #ff4da6;
-    margin-bottom: 20px;
-  }
+      body {
+        background: linear-gradient(30deg, var(--colors-pink), var(--colors-purple), var(--colors-blue));
+        color: white;
+        font-family: cursive;
+        text-align: center;
 
-  .zoom-number {
-    font-size: 5rem;
-    color: #ff4da6;
-    animation: zoomIn 0.5s ease forwards;
-  }
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        height: 100vh;
+      }
+      body.revealed {
+        background: linear-gradient(to bottom, #fff0f5, #ffe6f0);
+        transition: background 5s ease;
+      }
 
-  @keyframes zoomIn {
-    0% { transform: scale(0.5); opacity: 0; }
-    50% { transform: scale(1.5); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
-  }
+      #intro {
+        font-family: "Patrick Hand SC", cursive;
+        font-size: 3rem;
+      }
+      #intro.hidden {
+        display: none;
+      }
 
-  .reveal {
-    display: none;
-    font-size: 4rem;
-    margin-top: 20px;
-    color: #ff3399;
-    animation: fadein 1s ease-in-out forwards;
-  }
+      #countdown {
+        color: black;
+        font-family: "Pacifico", cursive;
+        font-size: 2rem;
+      }
+      #countdown.big-number {
+        font-family: "Patrick Hand SC", cursive;
+        font-size: 50vh;
+        position: relative;
+        top: -0.2em;
+      }
+      #countdown.revealed {
+        display: none;
+      }
 
-  @keyframes fadein {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
+      #revealText {
+        display: none;
+        color: #ff4da6;
+        font-family: "Pacifico", cursive;
+        font-size: 10vw;
+        animation: fadein 1s ease-in-out forwards;
+      }
+      #revealText.revealed {
+        display: block;
+      }
 
-  audio {
-    display: none;
-  }
-</style>
-</head>
-<body>
+      @keyframes fadein {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="intro">
+      <p>Que bichinho é este?</p>
+      <img src="./eco.png" />
+      <p>❤❤❤ Munino?<br />Munina? ❤❤❤</p>
+    </div>
+    <div id="countdown"></div>
+    <div id="revealText"></div>
 
-<h1>Adivinhem o que vem aí… 🎀💖💙</h1>
-<div id="countdown"></div>
-<div class="reveal" id="revealText">💖💖 É UMA MENINA!!! 💖💖</div>
+    <!-- Música principal -->
+    <audio id="bgMusic" loop style="display: none">
+      <source
+        src="https://cdn.pixabay.com/download/audio/2024/08/19/audio_3f958dc319.mp3?filename=happy-whistle-tunes-233525.mp3"
+        type="audio/mp3"
+      />
+    </audio>
 
-<!-- Música principal -->
-<audio id="bgMusic" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2024/08/19/audio_3f958dc319.mp3?filename=happy-whistle-tunes-233525.mp3" type="audio/mpeg">
-</audio>
+    <!-- Som para últimos 10 segundos -->
+    <audio id="countdownBeep" style="display: none">
+      <source
+        src="https://cdn.pixabay.com/download/audio/2025/07/10/audio_20c3b0b569.mp3?filename=countdown-372679.mp3"
+        type="audio/mp3"
+      />
+    </audio>
 
-<!-- Som para últimos 10 segundos -->
-<audio id="countdownBeep">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f2578f97c1.mp3?filename=beep-countdown-11003.mp3" type="audio/mpeg">
-</audio>
+    <!-- Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-<!-- Confetti -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+      /* ==== Data/hora fixa da revelação ==== */
+      const REVEAL_DATE = new Date(Date.now() + 40 * 1000); //new Date('2025-08-15T20:30:00+01:00');
+      const FINAL_COUNTDOWN_DURATION_SECS = 35; // 90
+      const CONFETTIS_DURATION_SECS = 60; // 10
 
-<script>
-/* ==== Data/hora fixa da revelação ==== */
-let revealDate = new Date('2025-08-15T20:30:00+01:00');
+      const introEl = document.getElementById("intro");
+      const countdownEl = document.getElementById("countdown");
+      const revealText = document.getElementById("revealText");
+      const countdownSound = document.getElementById("countdownBeep");
+      const revealMusic = document.getElementById("bgMusic");
+      const bodyEl = document.body;
 
-let countdownEl = document.getElementById("countdown");
-let revealText = document.getElementById("revealText");
-let bgMusic = document.getElementById("bgMusic");
-let beepSound = document.getElementById("countdownBeep");
-let bodyEl = document.body;
+      let secondsLeftTotal = Math.floor((REVEAL_DATE.getTime() - new Date().getTime()) / 1000);
+      if (secondsLeftTotal < 0) {
+        secondsLeftTotal = FINAL_COUNTDOWN_DURATION_SECS + 5;
+      }
 
-/* ==== Contagem decrescente ==== */
-let timer = setInterval(function() {
-  let now = new Date().getTime();
-  let distance = revealDate.getTime() - now;
+      const timer = setInterval(() => {
+        if (secondsLeftTotal > FINAL_COUNTDOWN_DURATION_SECS) {
+          updateCountdown();
+          secondsLeftTotal -= 1;
+        } else if (secondsLeftTotal > 0) {
+          if (secondsLeftTotal === FINAL_COUNTDOWN_DURATION_SECS)
+            setupFinalCountdown();
+          if (secondsLeftTotal % 31 === 0) restartCountdownMusic();
+          updateFinalCountdown();
+          secondsLeftTotal -= 1;
+        } else {
+          clearInterval(timer);
+          startReveal();
+        }
+      }, 1000);
 
-  if (distance <= 0) {
-    clearInterval(timer);
-    iniciarRevelacao();
-  } else {
-    let secondsLeftTotal = Math.floor((distance / 1000));
-    let hours = Math.floor((secondsLeftTotal / 3600) % 24);
-    let minutes = Math.floor((secondsLeftTotal / 60) % 60);
-    let seconds = secondsLeftTotal % 60;
+      function updateCountdown() {
+        let hours = Math.floor((secondsLeftTotal / 3600) % 24);
+        let minutes = Math.floor((secondsLeftTotal / 60) % 60);
+        let seconds = secondsLeftTotal % 60;
+        countdownEl.innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+      }
+      function setupFinalCountdown() {
+        introEl.className = "hidden";
+        countdownEl.className = "big-number";
+        countdownSound.play();
+      }
+      function restartCountdownMusic() {
+        countdownSound.currentTime = 0;
+      }
+      function updateFinalCountdown() {
+        const color = secondsLeftTotal % 2 === 1 ? "blue" : "pink";
+        countdownEl.style.color = `var(--colors-${color}-light)`;
+        countdownEl.innerHTML = secondsLeftTotal;
+      }
 
-    // Últimos 10 segundos: zoom e beep
-    if (secondsLeftTotal <= 10) {
-      countdownEl.className = "zoom-number";
-      countdownEl.innerHTML = secondsLeftTotal;
-      beepSound.currentTime = 0;
-      beepSound.play();
-    } else {
-      countdownEl.className = "";
-      countdownEl.innerHTML = `Faltam ${hours}h ${minutes}m ${seconds}s`;
-    }
-  }
-}, 1000);
+      function startReveal() {
+        document.body.className = "revealed";
+        introEl.className = "hidden";
+        countdownEl.className = "revealed";
+        revealText.className = "revealed";
+        revealText.innerHTML = "uma XavierA!!!<br />&#127872;";
 
-/* ==== Função de revelação ==== */
-function iniciarRevelacao() {
-  countdownEl.style.display = "none";
-  revealText.style.display = "block";
-  bgMusic.play();
-  // parar animação do fundo e fixar rosa
-  bodyEl.style.animation = "none";
-  bodyEl.style.background = "linear-gradient(to bottom, #fff0f5, #ffe6f0)";
-  soltarConfetis();
-}
+        countdownSound.pause();
+        revealMusic.play();
+        launchConfettis();
+      }
 
-/* ==== Confettis ==== */
-function soltarConfetis() {
-  let duration = 5000;
-  let end = Date.now() + duration;
-  (function frame() {
-    confetti({
-      particleCount: 6,
-      angle: 60,
-      spread: 65,
-      origin: { x: 0 },
-      colors: ['#ff69b4', '#ffb6c1', '#ffc0cb']
-    });
-    confetti({
-      particleCount: 6,
-      angle: 120,
-      spread: 65,
-      origin: { x: 1 },
-      colors: ['#ff69b4', '#ffb6c1', '#ffc0cb']
-    });
-    if (Date.now() < end) {
-      requestAnimationFrame(frame);
-    }
-  }());
-}
+      function launchConfettis() {
+        const end = Date.now() + CONFETTIS_DURATION_SECS * 1000;
+        (function frame() {
+          const confettiCommonSettings = {
+            particleCount: 6,
+            spread: 65,
+            colors: ["#ff69b4", "#ffb6c1", "#ffc0cb", "#ffb6cf"],
+          };
+          confetti({ ...confettiCommonSettings, angle: 60, origin: { x: 0 } });
+          confetti({ ...confettiCommonSettings, angle: 120, origin: { x: 1 } });
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          }
+        })();
+      }
 
-/* ==== Atalho teclado R ==== */
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'r' || e.key === 'R') {
-    clearInterval(timer);
-    iniciarRevelacao();
-  }
-});
-</script>
-
-</body>
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "0") {
+          clearInterval(timer1);
+          startReveal();
+        }
+      });
+    </script>
+  </body>
 </html>
