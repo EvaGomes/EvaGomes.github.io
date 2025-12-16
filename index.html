@@ -1,9 +1,136 @@
-<!DOCTYPE html>
 <html>
-
+<head>
+	<style>
+		:root {
+			--colors-bg: #eee;
+			--max-box-width: 300px;
+		}
+		* {
+			font-family: sans-serif;
+			box-sizing: border-box;
+		}
+		div#diapers {
+		    display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 1rem;
+			flex-wrap: wrap;
+			margin: 1rem;
+		}
+		.diaper {
+			background: var(--colors-bg);
+			border: 3px solid var(--colors-bg);
+			border-radius: 5px;
+			margin: 0;
+			max-width: 300px;
+			width: 300px;
+		}
+		.diaper img {
+			border-radius: 5px;
+			max-height: 100%;
+			max-width: 100%;
+		}
+		.diaper .brand {
+			color: inherit;
+			font-size: small;
+			text-decoration: none;
+		}
+		.diaper .pattern {
+			margin: 1rem;
+			text-align: center;
+		}
+		.diaper .number {
+			background: lightpink;
+			border-radius: 50%;			
+			width: 1.5rem;
+			height: 1.5rem;
+			
+			padding-top: 3px;
+			text-align: center;
+			
+			position: absolute;
+			top: 3px;
+			right: 3px;
+		}
+		.diaper .number.sponsored {
+			background: var(--colors-bg);
+		}
+	</style>
+</head>
 <body>
-    <h1>Hello World</h1>
-    <p>I'm hosted with GitHub Pages.</p>
-</body>
+	<h1>Fraldas da Cachopa</h1>
+	<div id="diapers"></div>
 
+
+	<script>
+		const DATA = Object.freeze([
+			{ marca: "Pico Tango", modelo: "NOVO 2.0", url: "https://picotango.com/pt-pt/produto/fraldas-reutilizaveis/",
+			padrao: "Algae", imgs: ["https://picotango.com/wp-content/uploads/2022/03/2-2-compress.jpg"] },
+			{ marca: "Pico Tango", modelo: "NOVO 2.0", url: "https://picotango.com/pt-pt/produto/fraldas-reutilizaveis/",
+			padrao: "Coral", imgs: ["https://picotango.com/wp-content/uploads/2022/03/coral-compress-e1652113611456.jpg", "https://picotango.com/wp-content/uploads/2023/04/IMG_2509-scaled.jpg"] },
+			{ marca: "Pico Tango", modelo: "NOVO 2.0", url: "https://picotango.com/pt-pt/produto/fraldas-reutilizaveis/",
+			padrao: "Go Wild", imgs: ["https://picotango.com/wp-content/uploads/2023/07/097-scaled-e1690459852503.jpg"] },
+			{ marca: "Pico Tango", modelo: "NOVO 2.0", url: "https://picotango.com/pt-pt/produto/fraldas-reutilizaveis/",
+			padrao: "Medusa", imgs: ["https://picotango.com/wp-content/uploads/2022/03/jelly-compress-compress-e1690459593202.jpg", "https://picotango.com/wp-content/uploads/2022/04/IMG_2361-scaled-e1652116241448.jpg"] },
+			{ marca: "Pico Tango", modelo: "NOVO 2.0", url: "https://picotango.com/pt-pt/produto/fraldas-reutilizaveis/",
+			padrao: "Seastone", imgs: ["https://picotango.com/wp-content/uploads/2022/03/sea-compress-compress-compress-e1652113698473.jpg"] },
+			{ marca: "Pico Tango", modelo: "NOVO 2.0", url: "https://picotango.com/pt-pt/produto/fraldas-reutilizaveis/",
+			padrao: "Snap Snap", imgs: ["https://picotango.com/wp-content/uploads/2022/03/snap-compress-compress-e1652113732304.jpg"] },
+			{ marca: "Pico Tango", modelo: "NOVO 2.0", url: "https://picotango.com/pt-pt/produto/fraldas-reutilizaveis/",
+			padrao: "Turtle", imgs: ["https://picotango.com/wp-content/uploads/2022/03/tutoral-compress-compress-compress-compress-e1652113762838.jpg", "https://picotango.com/wp-content/uploads/2022/03/EL9A6599-scaled.jpg"] },
+			{ marca: "Pico Tango", modelo: "NOVO 2.0", url: "https://picotango.com/pt-pt/produto/fraldas-reutilizaveis/",
+			padrao: "Winter is coming", imgs: ["https://picotango.com/wp-content/uploads/2023/07/Picotango-118-scaled-e1690459519993.jpg"] },
+			{ marca: "Thirsties", modelo: "Natural One Size Pocket", url: "https://thirstiesbaby.com/products/natural-one-size-pocket-diaper",
+			padrao: "Crockin", imgs: ["https://thirstiesbaby.com/cdn/shop/files/Crockin_Thirsties_OS_Pocket_H_L_720x.jpg?v=1765293928"], sponsor: "da Tia Maria" },
+			{ marca: "Thirsties", modelo: "Natural One Size Pocket", url: "https://thirstiesbaby.com/products/natural-one-size-pocket-diaper",
+			padrao: "Ferm-stockin", imgs: ["https://thirstiesbaby.com/cdn/shop/files/Ferm-stockin-Thirsties_OS_Pocket_H_L_720x.jpg?v=1765293928"], sponsor: "da Tia Maria" },
+			{ marca: "Thirsties", modelo: "Natural One-Size Pocket", url: "https://thirstiesbaby.com/products/natural-one-size-pocket-diaper",
+			padrao: "Rainbow", imgs: ["https://www.yeswellness.com/cdn/shop/files/thirsties-one-size-hook-and-loop-pocket-diaper-rainbow-840015703066-41514181165358.jpg?v=1707162233&width=480", "https://www.yeswellness.com/cdn/shop/files/thirsties-one-size-hook-and-loop-pocket-diaper-rainbow-840015703066-41514181132590.jpg?v=1707162235&width=480"], sponsor: "da Tia Maria" },
+			{ marca: "Thirsties", modelo: "Natural One Size Pocket", url: "https://thirstiesbaby.com/products/natural-one-size-pocket-diaper",
+			padrao: "Sloth Life", imgs: ["https://thirstiesbaby.com/cdn/shop/files/Sloth_Life_Thirsties_Duo_Wrap_H_L_720x.jpg?v=1765299186"], sponsor: "da Tia Maria" },
+			{ marca: "Thirsties", modelo: "Natural One Size All-in-One", url: "https://meekbum.com/products/thirsties-natural-tudo-em-um",
+			padrao: "Forest Frolic", imgs: ["https://meekbum.com/cdn/shop/products/Thirsties_OS_AIO_Snap_Forest-Frolic_801a1cdd-0a17-46cb-8bc2-6ff2e6303d45.jpg?v=1671482273&width=540"], sponsor: "" },
+			{ marca: "Thirsties", modelo: "Natural One Size All-in-One", url: "https://meekbum.com/products/thirsties-natural-tudo-em-um",
+			padrao: "Nightlife", imgs: ["https://meekbum.com/cdn/shop/products/fraldas-reutilizaveis-tudo-em-um-Thirsties-molas-Nightlife.jpg?v=1671482273&width=540", "https://meekbum.com/cdn/shop/products/fralda-de-pano-bebe-Thirsties-Nightlife_fce3c86a-a1e0-4502-a4dd-682ec636fffa.jpg?v=1671482258&width=893"], sponsor: "" },
+			{ marca: "Thirsties", modelo: "Natural One Size All-in-One", url: "https://meekbum.com/products/thirsties-natural-tudo-em-um",
+			padrao: "We all Scream", imgs: ["https://meekbum.com/cdn/shop/products/Thirsties-Natural-Tamanho-Unico-Tudo-em-Um-Molas-We-All-Scream.jpg?v=1671482286&width=720"], sponsor: "" },
+			{ marca: "Kit & Kin", modelo: "reusable cloth nappie", url: "https://kitandkin.com/collections/nappies/products/reusable-cloth-nappy",
+			padrao: "Fox", imgs: ["https://kitandkin.com/cdn/shop/products/kit-and-kin-reusable-cloth-nappy-fox_540x.jpg?v=1756824751", "https://kitandkin.com/cdn/shop/products/kit-and-kin-reusable-cloth-nappy-new08_540x.jpg?v=1756824751"], sponsor: "" },
+			{ marca: "Kit & Kin", modelo: "reusable cloth nappie", url: "https://kitandkin.com/collections/nappies/products/reusable-cloth-nappy",
+			padrao: "Tiger", imgs: ["https://kitandkin.com/cdn/shop/products/kit-and-kin-reusable-cloth-nappy-tiger_540x.jpg?v=1756824751", "https://kitandkin.com/cdn/shop/products/kit-and-kin-reusable-hypoallergenic-nappy_540x.jpg?v=1756824751"], sponsor: "" },
+			{ marca: "Kit & Kin", modelo: "reusable cloth nappie", url: "https://kitandkin.com/collections/nappies/products/reusable-cloth-nappy",
+			padrao: "Zebra", imgs: ["https://kitandkin.com/cdn/shop/products/kit-and-kin-reusable-cloth-nappy-zebra_540x.jpg?v=1756824751", "https://kitandkin.com/cdn/shop/products/kit-and-kin-reusable-cloth-nappy-new10_540x.jpg?v=1756824751"], sponsor: "" },
+			{ marca: "Mother-ease", modelo: "One Size Wizard Uno - Natural Cotton", url: "https://meekbum.com/products/mother-ease-fralda-tudo-em-um-wizard-uno-organica", padrao: "Cranberry", imgs: ["https://meekbum.com/cdn/shop/products/Mother-ease-Fralda-Tudo-em-Um-Wizard-One-Tamanho-Unico-Cranberry_68984483-2370-466e-84de-d1499cf4b824.jpg?v=1671480581&width=540"], sponsor: "" },
+			{ marca: "Mother-ease", modelo: "Wizard Uno Organic", url: "https://meekbum.com/products/mother-ease-fralda-tudo-em-um-wizard-uno-organica", padrao: "Dream", imgs: ["https://meekbum.com/cdn/shop/products/Mother-ease-Fralda-Tudo-em-Um-Wizard-One-Tamanho-Unico-Dream_4559e333-d584-4a66-a336-0931fe11792b.jpg?v=1671480581&width=540"], sponsor: "" },
+			{ marca: "Mother-ease", modelo: "Wizard Uno Organic", url: "https://meekbum.com/products/mother-ease-fralda-tudo-em-um-wizard-uno-organica", padrao: "Mustard", imgs: ["https://meekbum.com/cdn/shop/products/Mother-ease-Fralda-Tudo-em-Um-Wizard-One-Tamanho-Unico-Mustard_f7121ece-67ba-4217-b454-93fabf2b1980.jpg?v=1671480581&width=540"], sponsor: "" },
+			{ marca: "Mother-ease", modelo: "Wizard Uno Organic", url: "https://meekbum.com/products/mother-ease-fralda-tudo-em-um-wizard-uno-organica", padrao: "Navy", imgs: ["https://meekbum.com/cdn/shop/products/Mother-ease-Fralda-Tudo-em-Um-Wizard-One-Tamanho-Unico-Navy_3265fd6d-26a0-44b7-ad37-5d6654fd96c2.jpg?v=1671480581&width=540"], sponsor: "" },
+			{ marca: "Mother-ease", modelo: "Wizard Uno Organic", url: "https://meekbum.com/products/mother-ease-fralda-tudo-em-um-wizard-uno-organica", padrao: "Pine", imgs: ["https://meekbum.com/cdn/shop/products/Mother-ease-Fralda-Tudo-em-Um-Wizard-One-Tamanho-Unico-Pine_9965dafc-08a4-47c1-ae89-121394abd504.jpg?v=1671480581&width=540"], sponsor: "" },
+			{ marca: "Mother-ease", modelo: "Wizard Uno Organic", url: "https://meekbum.com/products/mother-ease-fralda-tudo-em-um-wizard-uno-organica", padrao: "Sunshine", imgs: ["https://meekbum.com/cdn/shop/products/Mother-ease-Sunshine-Uno-OS_4f47d073-102d-4398-8320-9a2977b2fe94.jpg?v=1671480589&width=540"], sponsor: "" },
+			{ marca: "Mother-ease", modelo: "Wizard Uno Organic", url: "https://meekbum.com/products/mother-ease-fralda-tudo-em-um-wizard-uno-organica", padrao: "Wild One - Patched", imgs: ["https://meekbum.com/cdn/shop/products/Mother-Ease-Wizard-Uno-Natural-Cotton-Wild-One-Patched.png?v=1671480589&width=540"], sponsor: "" },
+			{ marca: "Little Lamb", modelo: "Onesize Reusable Pocket Nappy", url: "https://www.ecologicalkids.pt/fralda%20reutiliz%C3%A1vel%20tamanho%20%C3%9Anico%20little%20lamb%20capricorn.html", padrao: "Capricorn", imgs: ["https://www.ecologicalkids.pt/pub/media/catalog/product/cache/e49ed842018cfb15e61493a6efb91210/f/r/fralda_reutilizavel_tamanho_unico_capriocornio_little_lamb_ecologicalkids.jpg", "https://www.ecologicalkids.pt/pub/media/catalog/product/cache/e49ed842018cfb15e61493a6efb91210/f/r/fralda_reutilizavel_tamanho_unico_capriocornio_little_lamb.jpg"], sponsor: "" },
+			{ marca: "Kanga care", modelo: "Rumparooz", url: "https://meekbum.com/products/rumparooz-g2?variant=43870621106441", padrao: "Muchness", imgs: ["https://meekbum.com/cdn/shop/products/Rumparooz-fralda-de-bolso-Muchness.jpg?v=1671481854&width=540"], sponsor: "" },
+			{ marca: "Pop-in", modelo: "New Gen V2", url: "https://www.ecologicalkids.pt/fralda-reutilizavel-de-tamanho-unico-pop-in-v2-round-garden-velcro.html", padrao: "Round Garden", imgs: ["https://www.ecologicalkids.pt/pub/media/catalog/product/cache/e49ed842018cfb15e61493a6efb91210/f/r/fralda-reutilizavel-tamanho-unico-pop-in-around-garden-velcro.jpeg"], sponsor: "" },
+			{ marca: "Pop-in", modelo: "New Gen V2", url: "https://www.ecologicalkids.pt/fralda-reutilizavel-de-tamanho-unico-pop-in-v2-parrot.html", padrao: "Parrot", imgs: ["https://www.ecologicalkids.pt/pub/media/catalog/product/cache/e49ed842018cfb15e61493a6efb91210/p/a/parrot_3.jpg"], sponsor: "" },
+			{ marca: "", modelo: "", url: "", padrao: "", imgs: [], sponsor: "" },
+			{ marca: "", modelo: "", url: "", padrao: "", imgs: [], sponsor: "" },
+			
+		]);
+		
+		function renderDiaper(d,index) {
+			//return `<pre class="diaper">${JSON.stringify(d, null, 2)}</pre>`
+			return `
+				<div class="diaper" style="position:relative">
+					${d.imgs.map(i => `<img src="${i}" />`).join('')}
+					<a class="brand" href="${d.url}" target="_blank"><b>${d.marca}</b> ${d.modelo}</a>
+					<h3 class="pattern"><b>${d.padrao}</b></h3>
+					<p class="sponsor">${d.sponsor ? `<i>🎁 Fralda ${d.sponsor}</i>` : ''}</p>
+					<div class="number${d.sponsor ? ' sponsored' : ''}">${index+1}</div>
+				</div>`
+		}
+		
+		const div = document.getElementById('diapers');
+		div.innerHTML = DATA.map(renderDiaper).join('');
+	</script>
+
+</body>
 </html>
