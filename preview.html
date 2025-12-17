@@ -94,6 +94,9 @@
 </head>
 <body>
 	<h1>Fraldas da Cachopa</h1>
+	<div style="background:white;text-align:right; position:sticky;top:0;z-index:3;">
+		<input id="apadrinhadas" type="checkbox" /><label for="apadrinhadas"></label>
+	</div>
 	<div id="diapers"></div>
 
 
@@ -292,8 +295,9 @@
 			
 		]);
 		
-		function renderDiaper(d,index) {
+		function renderDiaper(d,index,showSponsored) {
 			//return `<pre class="diaper">${JSON.stringify(d, null, 2)}</pre>`
+			if (!showSponsored && d.sponsor) return '';
 			const isPT = d.marca==="Pico Tango" || d.marca==="Piriuki";
 			return `
 				<div class="diaper${d.sponsor ? ' sponsored' : ''}" style="position:relative">
@@ -303,11 +307,21 @@
 					${d.imgs.map(i => `<img src="${i}" />`).join('')}
 					<div class="number">${index+1}</div>
 					${isPT ? `<div class="country"><img src="https://em-content.zobj.net/source/joypixels/275/flag-portugal_1f1f5-1f1f9.png"></div>` : '' }
-				</div>`
+				</div>`;
+		}
+		function renderDiapers(div, showSponsored) {
+			console.debug('rendering', showSponsored)
+			div.innerHTML = DATA.map((d,i) => renderDiaper(d,i,showSponsored)).join('');
 		}
 		
 		const div = document.getElementById('diapers');
-		div.innerHTML = DATA.map(renderDiaper).join('');
+		const checkbox = document.getElementById('apadrinhadas');
+		const checkboxLabel = document.querySelector('label[for="apadrinhadas"]');
+		
+		checkboxLabel.innerHTML = 'Esconder apadrinhadas';
+		renderDiapers(div,!checkbox.checked);
+		
+		checkbox.addEventListener('change', evt => renderDiapers(div,!evt.target.checked));
 	</script>
 
 </body>
