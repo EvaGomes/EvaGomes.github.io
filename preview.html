@@ -88,7 +88,8 @@
 			text-align: center;
 		}
 		.diaper.sponsored .number {
-			background: var(--colors-bg);
+			background: #ddd;
+			color: darkgray;
 		}
 	</style>
 </head>
@@ -128,8 +129,7 @@
 			        padrao: "Coral", imgs: ["./i-p/e1652107634245.jpg",
 										    "./i-p/IMG_2505-scaled-e1664620550446-1353850876.jpg"] },
 			{ marca: "Pico Tango", modelo: "NOVO 2.0", url: "https://picotango.com/pt-pt/produto/fraldas-reutilizaveis/",
-			        padrao: "Go Wild", imgs: [/*"https://picotango.com/wp-content/uploads/2023/07/097-scaled-e1690459852503.jpg"*/,
-											  "./i-p/16-1-scaled.jpg",
+			        padrao: "Go Wild", imgs: ["./i-p/16-1-scaled.jpg",
 											  "./i-p/e1690457701432.png"] },
 			{ marca: "Pico Tango", modelo: "NOVO 2.0", url: "https://picotango.com/pt-pt/produto/fraldas-reutilizaveis/",
 			        padrao: "Medusa", imgs: [/*"https://picotango.com/wp-content/uploads/2022/03/jelly-compress-compress-e1690459593202.jpg",
@@ -289,9 +289,9 @@
 			        padrao: "Transport", imgs: ["https://meekbum.com/cdn/shop/products/Fralda-reutilizavel-tamanho-unico-BabaBoo-One-Size-Nappy-Transport.jpg?v=1671481806&width=540",
 												"https://easytots.com/wp-content/uploads/2024/02/PhotoRoom_20240203_172242.jpg"],
 					sponsor: "" },
-			{ marca: "", modelo: "", url: "", 
+			/*{ marca: "", modelo: "", url: "", 
 			        padrao: "", imgs: [],
-					sponsor: "" },
+					sponsor: "" },*/
 			
 		]);
 		
@@ -301,7 +301,7 @@
 			const isPT = d.marca==="Pico Tango" || d.marca==="Piriuki";
 			return `
 				<div class="diaper${d.sponsor ? ' sponsored' : ''}" style="position:relative">
-					<a class="brand" href="${d.url}" target="_blank"><b>${d.marca}</b> ${d.modelo}</a>
+					<div class="brand"><b>${d.marca}</b> ${d.modelo}</div>
 					<h3 class="pattern">${d.padrao}</h3>
 					<h3 class="sponsor">🎁 Fralda ${d.sponsor}</h3>
 					${d.imgs.map(i => `<img src="${i}" />`).join('')}
@@ -322,6 +322,11 @@
 		renderDiapers(div,!checkbox.checked);
 		
 		checkbox.addEventListener('change', evt => renderDiapers(div,!evt.target.checked));
+		
+		console.debug({
+			DATA,
+			sponsoredCount: DATA.filter(d => d.sponsor).length,
+			sponsoredURLs: DATA.map(d => d.sponsor ? d.url : null) })
 	</script>
 
 </body>
