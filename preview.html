@@ -295,6 +295,21 @@
 			
 		]);
 		
+		<!-- DATA LOGGING -->
+		console.debug({
+			DATA,
+			sponsoredCount: DATA.filter(d => d.sponsor).length,
+			sponsoredURLs: DATA.map(d => d.sponsor ? d.url : null) })
+	</script>
+	<script>
+		<!-- ELEMENTS -->
+		
+		const div = document.getElementById('diapers');
+		const checkbox = document.getElementById('apadrinhadas');
+		const checkboxLabel = document.querySelector('label[for="apadrinhadas"]');
+		
+		<!-- FUNCTIONS -->
+		
 		function renderDiaper(d,index,showSponsored) {
 			//return `<pre class="diaper">${JSON.stringify(d, null, 2)}</pre>`
 			if (!showSponsored && d.sponsor) return '';
@@ -309,24 +324,18 @@
 					${isPT ? `<div class="country"><img src="https://em-content.zobj.net/source/joypixels/275/flag-portugal_1f1f5-1f1f9.png"></div>` : '' }
 				</div>`;
 		}
-		function renderDiapers(div, showSponsored) {
+		function renderDiapers() {
+			const showSponsored = !checkbox.checked;
 			console.debug('rendering', showSponsored)
 			div.innerHTML = DATA.map((d,i) => renderDiaper(d,i,showSponsored)).join('');
 		}
 		
-		const div = document.getElementById('diapers');
-		const checkbox = document.getElementById('apadrinhadas');
-		const checkboxLabel = document.querySelector('label[for="apadrinhadas"]');
-		
+		<!-- INITIAL GUI SETUP -->
 		checkboxLabel.innerHTML = 'Esconder apadrinhadas';
-		renderDiapers(div,!checkbox.checked);
+		renderDiapers();
 		
-		checkbox.addEventListener('change', evt => renderDiapers(div,!evt.target.checked));
-		
-		console.debug({
-			DATA,
-			sponsoredCount: DATA.filter(d => d.sponsor).length,
-			sponsoredURLs: DATA.map(d => d.sponsor ? d.url : null) })
+		<!-- LISTENERS SETUP -->
+		checkbox.addEventListener('change', _evt => renderDiapers());
 	</script>
 
 </body>
