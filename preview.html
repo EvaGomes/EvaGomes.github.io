@@ -97,6 +97,8 @@
 	<h1>Fraldas da Cachopa</h1>
 	<div style="background:white;text-align:right; position:sticky;top:0;z-index:3;">
 		<input id="apadrinhadas" type="checkbox" /><label for="apadrinhadas"></label>
+		<span> &nbsp; </span>
+		<input id="imagens" type="checkbox" /><label for="imagens"></label>
 	</div>
 	<div id="diapers"></div>
 
@@ -305,37 +307,45 @@
 		<!-- ELEMENTS -->
 		
 		const div = document.getElementById('diapers');
-		const checkbox = document.getElementById('apadrinhadas');
-		const checkboxLabel = document.querySelector('label[for="apadrinhadas"]');
+		const sponsoredCheckbox = document.getElementById('apadrinhadas');
+		const sponsoredCheckboxLabel = document.querySelector('label[for="apadrinhadas"]');
+		const imagesCheckbox = document.getElementById('imagens');
+		const imagesCheckboxLabel = document.querySelector('label[for="imagens"]');
 		
 		<!-- FUNCTIONS -->
 		
-		function renderDiaper(d,index,showSponsored) {
+		function renderDiaper(d,index,showSponsored,showAllImages) {
 			//return `<pre class="diaper">${JSON.stringify(d, null, 2)}</pre>`
 			if (!showSponsored && d.sponsor) return '';
 			const isPT = d.marca==="Pico Tango" || d.marca==="Piriuki";
+			const renderedImages = showAllImages
+				? d.imgs.map(i => `<img src="${i}" />`).join('')
+				: `<img src="${ d.imgs[0] }" />`;
 			return `
 				<div class="diaper${d.sponsor ? ' sponsored' : ''}" style="position:relative">
 					<div class="brand"><b>${d.marca}</b> ${d.modelo}</div>
 					<h3 class="pattern">${d.padrao}</h3>
 					<h3 class="sponsor">🎁 Fralda ${d.sponsor}</h3>
-					${d.imgs.map(i => `<img src="${i}" />`).join('')}
+					${renderedImages}
 					<div class="number">${index+1}</div>
 					${isPT ? `<div class="country"><img src="https://em-content.zobj.net/source/joypixels/275/flag-portugal_1f1f5-1f1f9.png"></div>` : '' }
 				</div>`;
 		}
 		function renderDiapers() {
-			const showSponsored = !checkbox.checked;
-			console.debug('rendering', showSponsored)
-			div.innerHTML = DATA.map((d,i) => renderDiaper(d,i,showSponsored)).join('');
+			const showSponsored = !sponsoredCheckbox.checked;
+			const showAllImages = !imagesCheckbox.checked;
+			console.debug('rendering', showSponsored, showAllImages)
+			div.innerHTML = DATA.map((d,i) => renderDiaper(d,i,showSponsored,showAllImages)).join('');
 		}
 		
 		<!-- INITIAL GUI SETUP -->
-		checkboxLabel.innerHTML = 'Esconder apadrinhadas';
+		sponsoredCheckboxLabel.innerHTML = 'Esconder apadrinhadas';
+		imagesCheckboxLabel.innerHTML = 'Esconder imagens extra';
 		renderDiapers();
 		
 		<!-- LISTENERS SETUP -->
-		checkbox.addEventListener('change', _evt => renderDiapers());
+		sponsoredCheckbox.addEventListener('change', _evt => renderDiapers());
+		imagesCheckbox.addEventListener('change', _evt => renderDiapers());
 	</script>
 
 </body>
